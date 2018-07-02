@@ -90,11 +90,12 @@ router.get("/scrape", function (req, res) {
             function (err, inserted) {
                 if (err) {
                     console.log("err.code:", err.code);
+                    res.status(204).send("BarbaryCoast");
                 }
                 else {
                     console.log('successfully inserted');
+                    res.end();
                 }
-                res.end();
             });
     })
 });

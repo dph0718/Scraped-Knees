@@ -9,19 +9,14 @@ const user = {
 //call this function on each delete button in the function that renders it.
 function deleteClick($button, articleId, commentId) {
     $button.click(function () {
-        console.log('articleId:', articleId);
-        console.log('commentId:', commentId);
         $.ajax(`/article/${articleId}&${commentId}`, {
             type: "DELETE",
             success: data => {
-                console.log(data);
             }
         })
             .then(results => {
-                $(".commentry").hide();
                 getAllComments(articleId)
                     .then(data => {
-                        console.log("getAllComments done");
                         popComments(data, articleId)
                     });
             })
@@ -33,24 +28,34 @@ function getAllComments(articleId) {
     return new Promise((res, err) => {
         $.get("/comment/" + articleId)
             .then(data => {
+                $(".comments-container").empty();
                 let commentArray = [];
                 data[0].comments.forEach((e, i) => {
                     commentArray.push(e);
                 })
                 $(`.comments-length[data-id=${articleId}]`)
                     .text(`${commentArray.length}`);
-                console.log(`trying to put a number!${commentArray.length}`)
                 res(commentArray);
             })
     })
 }
 
+//Renders a message if nothing's scraped
+function nothingNew(errCode) {
+    let message;
+    if (errCode == "nocontent") {
+        message = "Sorry, no new articles were found.";
+    } else {
+        message = "Sorry, something went wrong."
+    }
+    $(`#scrapeError`)
+        .text(message);
+}
 //renders the comments from array (array), attaches them to an article by(articleId)
 function popComments(array, articleId) {
     let $commentBox = $(`.comments-container[data-id=${articleId}]`);
-    let numComments = array.length;
-    console.log('#comments:', numComments);
-
+    $(`.commentry`).hide();
+    $(".comments-container-wrapper").show();
 
     array.forEach(e => {
         let commentor = e.author;
@@ -79,20 +84,21 @@ $(".show-comments").click(function () {
         that.shown = false;
         that.fetched = false;
     }
-    let numOfComments;
     if (that.shown == false) {
         $that.text('Hide Comments');
-
         getAllComments(id)
             .then(data => {
-                console.log("getAllComments done");
                 popComments(data, id)
                 that.numOfComments = data.length;
             });
         that.shown = true;
     } else {
-        $that.text(`Show Comments (${that.numOfComments})`);
-        $(".commentry").hide();
+        getAllComments(id)
+            .then(data => {
+                that.numOfComments = data.length;
+                $that.text(`Show Comments (${that.numOfComments})`);
+            });
+        $(".comments-container-wrapper").hide();
         that.shown = false;
     }
 });
@@ -105,10 +111,16 @@ $(".author").val(user.name);
 
 //click handler: starts the scraping process,then reloads the page.
 $("#scrape").click(function () {
+    $('#scrapeError').text('Scraping.....');
     $.get("/scrape")
-        .then(function () {
-            $.get("/")
-            window.location.reload(true)
+        .then(function (data, err) {
+            if (err) {
+                nothingNew(err)
+            } else {
+                $('#scrapeError').empty();
+                $.get("/")
+                window.location.reload(true)
+            }
         })
 });
 
@@ -116,11 +128,10 @@ $("#scrape").click(function () {
 let attempted = false;
 $(".submit").click(function () {
     event.preventDefault();
-    console.log('comment clicked.')
+
     let id = $(this).data('id');
     let comment = $(`#comment${id}`).val();
     let author = $(`#author${id}`).val();
-    console.log(comment, author);
     if (!comment || !author) {
         if (attempted == false) {
             $("<p>").prependTo("body")
@@ -155,7 +166,8 @@ $(".submit").click(function () {
                     .then(comments => {
                         popComments(comments, id);
                         $(`#comment${id}`).val('');
-                        $(`#author${id}`).val('');
+                        $(`#author${id}`).val(user.name);
+                        $('.comment-form').hide();
                     })
             })
     }

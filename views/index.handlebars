@@ -9,7 +9,8 @@
 </div>
 
 <div class="show-comments btn btn-primary" data-id="{{_id}}">
-    {{#if comments}} Show comments (<span class='comments-length' data-id='{{_id}}'>{{comments.length}}</span>)</div>
+    {{#if comments}} Show comments (
+    <span class='comments-length' data-id='{{_id}}'>{{comments.length}}</span>)</div>
 {{else}} No comments yet. {{/if}}
 </div>
 <form class='comment-form' data-id="{{_id}}">
@@ -17,8 +18,9 @@
     <textarea id='comment{{_id}}' placeholder='Enter your comment about {{title}}'></textarea>
     <button class="submit btn btn-primary" data-id="{{_id}}">Submit</button>
 </form>
-<div class="comments-container" data-id="{{_id}}">
+<div class='comments-container-wrapper'>
+    <div class="comments-container" data-id="{{_id}}">
+    </div>
 </div>
-
 
 {{/each}}
