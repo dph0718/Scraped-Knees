@@ -1,0 +1,15 @@
+#scrape {
+    background-image: url('/images/bandage.png');
+    background-size: 100% 100%;
+    height: 100px;
+    width: 350px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+.comment, #scrape, .show-comments {
+    cursor: pointer;
+}
