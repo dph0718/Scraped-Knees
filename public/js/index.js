@@ -1,6 +1,3 @@
-$(document).click(() =>
-    console.log("clicked"));
-
 //dummy user data to be replaced by authentication
 const user = {
     name: "Your Name",
@@ -48,7 +45,7 @@ function getAllComments(articleId) {
     })
 }
 
-//renders the comments from array (array), attaches them to an element($that)
+//renders the comments from array (array), attaches them to an article by(articleId)
 function popComments(array, articleId) {
     let $commentBox = $(`.comments-container[data-id=${articleId}]`);
     let numComments = array.length;
@@ -66,10 +63,10 @@ function popComments(array, articleId) {
         "${e.comment}"</p>`);
             $newComment
                 .append(`<button class="delete" data-article="${e.article[0]}" data-id="${e._id}">Delete</button>`);
+            deleteClick($newComment, articleId, e._id);
         }
         $commentBox
             .after($newComment);
-        deleteClick($newComment, articleId, e._id);
     })
 };
 
@@ -106,7 +103,7 @@ $(".comment-form").css('display', 'none');
 //automatically sets the "author" input value to the user's name
 $(".author").val(user.name);
 
-//handles the click that starts the scraping process,then reloads the page.
+//click handler: starts the scraping process,then reloads the page.
 $("#scrape").click(function () {
     $.get("/scrape")
         .then(function () {
@@ -115,10 +112,7 @@ $("#scrape").click(function () {
         })
 });
 
-//click handler: 
-//  -validates entries
-//  -prompts user if incomplete
-//  -request to post comment object to database
+//click handler: //  -validates entries//  -prompts user if incomplete//  -request to post comment object to database
 let attempted = false;
 $(".submit").click(function () {
     event.preventDefault();
@@ -159,64 +153,17 @@ $(".submit").click(function () {
             function (data, success) {
                 getAllComments(id)
                     .then(comments => {
-                        popComments(comments, id)
+                        popComments(comments, id);
+                        $(`#comment${id}`).val('');
+                        $(`#author${id}`).val('');
                     })
-    //             let commentor = commentObject.author;
-    //             if (commentObject.authorId == user.id) {
-    //                 commentor = "You";
-    //             }
-    //             $(`.show-comments[data-id='${id}']`)
-    //                 .append(`<p>${commentor} said: </p>
-    // <p>"${commentObject.comment}"</p>`);
-                console.log('The post was successful!');
-                console.log("this is the then function's success:", success);
             })
     }
 })
 
-
-
-//handles the click that starts grabbing comments from the database
-//and appends them to the show-comments element.
-// $(".show-comments").click(function () {
-//     let id = $(this).data('id');
-//     let that = this;
-//     let $that = $(this);
-//     if (that.shown == undefined) {
-//         that.shown = false;
-//     }
-
-
-//     if (that.shown == false) {
-//         $that.text('Hide Comments');
-//         if (that.fetched == false) {
-//             that.commentArray = [];
-//             $.get("/comment/" + id)
-//                 .then(data => {
-//                     data[0].comments.forEach((e, i) => {
-//                         that.commentArray.push(e);
-//                     })
-//                 })
-//                 .then(() => {
-//                     popComments(that.commentArray, that, $that);
-//                     that.fetched = true;
-//                 })
-//         } else {
-//             popComments(that.commentArray, that, $that)
-//         }
-//     } else {
-//         $that.text(`Show Comments (${that.commentArray.length})`);
-//         $(".commentry").hide();
-//         that.shown = false;
-//     }
-// });
-
+//click handler: shows comment form when "comment" is clicked
 $(".comment").click(function () {
     let id = $(this).data('id');
     $(`.comment-form[data-id='${id}']`)
         .css('display', 'flex');
-    console.log(`clicked this ${id}`)
 });
-
-
-
