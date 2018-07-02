@@ -3,8 +3,8 @@ $(document).click(() =>
 
 //dummy user data to be replaced by authentication
 const user = {
-    name: "A different User",
-    id: "B6707",
+    name: "Elephant, Jr.",
+    id: "B6708",
     date: Date.now(),
 }
 
