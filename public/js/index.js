@@ -1,7 +1,7 @@
 //dummy user data to be replaced by authentication
 const user = {
     name: "Your Name",
-    id: "B6709",
+    id: "B6708",
     date: Date.now(),
 }
 
@@ -56,7 +56,7 @@ function popComments(array, articleId) {
     let $commentBox = $(`.comments-container[data-id=${articleId}]`);
     $(`.commentry`).hide();
     $(".comments-container-wrapper").show();
-    
+
     array.forEach(e => {
         let commentor = e.author;
         let articleId = e.article[0];
