@@ -1,7 +1,7 @@
 //dummy user data to be replaced by authentication
 const user = {
     name: "Your Name",
-    id: "B6708",
+    id: "B6707",
     date: Date.now(),
 }
 
