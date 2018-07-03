@@ -13,3 +13,9 @@
 .comment, #scrape, .show-comments {
     cursor: pointer;
 }
+
+.whole-article-wrapper {
+    margin: 16px;
+    padding: 8px;
+    border: gray 2px solid;
+}

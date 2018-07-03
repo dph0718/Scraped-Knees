@@ -113,13 +113,18 @@ $(".author").val(user.name);
 $("#scrape").click(function () {
     $('#scrapeError').text('Scraping.....');
     $.get("/scrape")
-        .then(function (data, err) {
+        .then(function (err, resp) {
             if (err) {
-                nothingNew(err)
-            } else {
+                console.log('resp', resp);
+                console.log('err:', err);
+                nothingNew(err);
+            } else if (resp == 'success') {
+                console.log('resp should be success:', resp)
                 $('#scrapeError').empty();
-                $.get("/")
-                window.location.reload(true)
+                $.get("/");
+                window.location.reload(true);
+            } else {
+                nothingNew(resp);
             }
         })
 });

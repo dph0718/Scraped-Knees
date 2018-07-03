@@ -1,26 +1,27 @@
-<H1>Scraped Knees</H1>
+<H1>Scraped Knees:</H1>
 
 {{#each results}}
-<a href="{{link}}">
-    <h2>{{title}}</h2>
-</a>
-<div class="comment btn btn-primary" data-id="{{_id}}">
-    {{#if comments}} Comment {{else}} Be the first to comment! {{/if}}
-</div>
+<div class='whole-article-wrapper'>
+    <a href="{{link}}">
+        <h2>{{title}}</h2>
+    </a>
+    <p>{{content}}</p>
+    <div class="comment btn btn-primary" data-id="{{_id}}">
+        {{#if comments}} Comment {{else}} Be the first to comment! {{/if}}
+    </div>
 
-<div class="show-comments btn btn-primary" data-id="{{_id}}">
-    {{#if comments}} Show comments (
-    <span class='comments-length' data-id='{{_id}}'>{{comments.length}}</span>)</div>
-{{else}} No comments yet. {{/if}}
-</div>
-<form class='comment-form' data-id="{{_id}}">
-    <input type="text" class="author" id="author{{_id}}">
-    <textarea id='comment{{_id}}' placeholder='Enter your comment about {{title}}'></textarea>
-    <button class="submit btn btn-primary" data-id="{{_id}}">Submit</button>
-</form>
-<div class='comments-container-wrapper'>
-    <div class="comments-container" data-id="{{_id}}">
+    <div class="show-comments btn btn-primary" data-id="{{_id}}">
+        {{#if comments}} Show comments (
+        <span class='comments-length' data-id='{{_id}}'>{{comments.length}}</span>) {{else}} No comments yet. {{/if}}
+    </div>
+    <form class='comment-form' data-id="{{_id}}">
+        <input type="text" class="author" id="author{{_id}}">
+        <textarea id='comment{{_id}}' placeholder='Enter your comment about {{title}}'></textarea>
+        <button class="submit btn btn-primary" data-id="{{_id}}">Submit</button>
+    </form>
+    <div class='comments-container-wrapper'>
+        <div class="comments-container" data-id="{{_id}}">
+        </div>
     </div>
 </div>
-
 {{/each}}
