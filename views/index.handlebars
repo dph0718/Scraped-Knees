@@ -11,8 +11,7 @@
     </div>
 
     <div class="show-comments btn btn-primary" data-id="{{_id}}">
-        {{#if comments}} Show comments (
-        <span class='comments-length' data-id='{{_id}}'>{{comments.length}}</span>) {{else}} No comments yet. {{/if}}
+        {{#if comments}} Show Comments (<span class='comments-length' data-id='{{_id}}'>{{comments.length}}</span>) {{else}} No comments yet. {{/if}}
     </div>
     <form class='comment-form' data-id="{{_id}}">
         <input type="text" class="author" id="author{{_id}}">
