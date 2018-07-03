@@ -56,7 +56,7 @@ function popComments(array, articleId) {
     let $commentBox = $(`.comments-container[data-id=${articleId}]`);
     $(`.commentry`).hide();
     $(".comments-container-wrapper").show();
-
+    
     array.forEach(e => {
         let commentor = e.author;
         let articleId = e.article[0];
@@ -66,9 +66,10 @@ function popComments(array, articleId) {
             commentor = "You";
             $newComment = $(`<p class='commentry'>${commentor} said: </br>
         "${e.comment}"</p>`);
+            let $delBtn = $(`<button>Delete</button>`);
             $newComment
-                .append(`<button class="delete" data-article="${e.article[0]}" data-id="${e._id}">Delete</button>`);
-            deleteClick($newComment, articleId, e._id);
+                .append($delBtn);
+            deleteClick($delBtn, articleId, e._id);
         }
         $commentBox
             .after($newComment);
@@ -115,11 +116,9 @@ $("#scrape").click(function () {
     $.get("/scrape")
         .then(function (err, resp) {
             if (err) {
-                console.log('resp', resp);
                 console.log('err:', err);
                 nothingNew(err);
             } else if (resp == 'success') {
-                console.log('resp should be success:', resp)
                 $('#scrapeError').empty();
                 $.get("/");
                 window.location.reload(true);
