@@ -130,7 +130,7 @@ $("#scrape").click(function () {
 
 //click handler: //  -validates entries//  -prompts user if incomplete//  -request to post comment object to database
 let attempted = false;
-$(".submit").click(function () {
+$(".submit").click(function (event) {
     event.preventDefault();
 
     let id = $(this).data('id');
